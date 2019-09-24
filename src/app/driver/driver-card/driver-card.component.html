@@ -3,6 +3,9 @@
     <img mat-card-image
          [src]="driver.image">
     <mat-card-content>
-        <app-flag [country]="driver.country"></app-flag>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+            <app-flag [country]="driver.country"></app-flag>
+            <span class="driverNr">{{ driver.driverNr}}</span>
+        </div>
     </mat-card-content>
 </mat-card>

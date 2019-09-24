@@ -1,0 +1,8 @@
+.driverNr {
+    width: 60px;
+    border: 1px solid black;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    font-size: 30px;
+}
