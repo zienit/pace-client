@@ -1,4 +1,5 @@
 export interface Driver {
     name: string,
-    image: string
+    image: string,
+    country: string
 }
