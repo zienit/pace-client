@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-title>{{ team.name }}</mat-card-title>
+    <div [ngStyle]="{'background-image':'url(' + team.image + ')'}"
+         class="team-image"></div>
+    <mat-card-content>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+            <app-flag [country]="team.country"></app-flag>
+            <span>CAR</span>
+        </div>
+    </mat-card-content>
+</mat-card>

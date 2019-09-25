@@ -1,0 +1,8 @@
+.team-grid {
+    width: 100%;
+    background-color: burlywood;
+}
+
+app-team-card {
+    margin: 4px;
+}

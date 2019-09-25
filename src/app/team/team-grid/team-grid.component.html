@@ -1,0 +1,20 @@
+<div fxLayout="column"
+     fxLayoutAlign="start center">
+    <mat-paginator *ngIf="(columnCount | async) > 1"
+                   [length]="teams.length"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   (page)="onPage($event)">
+    </mat-paginator>
+
+    <div fxLayout="row wrap"
+         fxLayoutAlign="start"
+         class="team-grid">
+        <app-team-card fxFlex.xs="0 1 100%"
+                         fxFlex.sm="0 1 calc(33.3% - 8px)"
+                         fxFlex.gt-sm="0 1 calc(25% - 8px)"
+                         *ngFor="let team of (teams | slice : pageIndex * pageSize : pageIndex * pageSize + pageSize)"
+                         [team]="team">
+        </app-team-card>
+    </div>
+</div>
