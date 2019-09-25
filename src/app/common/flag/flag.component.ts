@@ -22,6 +22,7 @@ export class FlagComponent implements OnInit {
     'bel': { row: 1, col: 0 },
     'nld': { row: 1, col: 1 },
     'rus': { row: 1, col: 8 },
+    'aut': { row: 1, col: 9 },
     'mex': { row: 2, col: 1 },
     'mco': { row: 2, col: 6 },
     'tha': { row: 3, col: 3 },

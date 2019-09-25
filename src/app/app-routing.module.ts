@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { DriverGridComponent } from './driver/driver-grid/driver-grid.component';
-import { FlagComponent } from './common/flag/flag.component';
+import { TeamGridComponent } from './team/team-grid/team-grid.component';
 
 const routes: Routes = [
     { path: '', component: WelcomeComponent },
-    { path: 'team', component: FlagComponent },
+    { path: 'team', component: TeamGridComponent },
     { path: 'driver', component: DriverGridComponent }
 ];
 

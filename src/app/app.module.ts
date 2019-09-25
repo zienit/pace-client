@@ -14,6 +14,9 @@ import { DriverCardComponent } from './driver/driver-card/driver-card.component'
 import { DriverGridComponent } from './driver/driver-grid/driver-grid.component';
 import { DriverService } from './driver/driver.service';
 import { FlagComponent } from './common/flag/flag.component';
+import { TeamCardComponent } from './team/team-card/team-card.component';
+import { TeamGridComponent } from './team/team-grid/team-grid.component';
+import { TeamService } from './team/team.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,9 @@ import { FlagComponent } from './common/flag/flag.component';
     HeaderComponent,
     DriverCardComponent,
     DriverGridComponent,
-    FlagComponent
+    FlagComponent,
+    TeamCardComponent,
+    TeamGridComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,10 @@ import { FlagComponent } from './common/flag/flag.component';
     AppRoutingModule,
     FlexLayoutModule
   ],
-  providers: [DriverService],
+  providers: [
+    DriverService,
+    TeamService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

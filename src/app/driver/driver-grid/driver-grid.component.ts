@@ -37,7 +37,7 @@ export class DriverGridComponent implements OnInit, OnDestroy {
     }));
     this.drivers = this.driverService.getDrivers();
 
-    // when column count change, reset the pagination so that driver currenly in top-left position remains visible.
+    // when column count change, reset the pagination so that item currenly in top-left position remains visible.
     this.resetPagination = this.columnCount.subscribe(cc => {
       if (cc == 1) {
         // paginator is removed
