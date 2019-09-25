@@ -2,5 +2,6 @@ export interface Driver {
     name: string,
     image: string,
     country: string,
-    driverNr: number
+    driverNr: number,
+    abbr: string
 }
