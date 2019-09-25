@@ -17,6 +17,7 @@ import { FlagComponent } from './common/flag/flag.component';
 import { TeamCardComponent } from './team/team-card/team-card.component';
 import { TeamGridComponent } from './team/team-grid/team-grid.component';
 import { TeamService } from './team/team.service';
+import { FilterSelectorComponent } from './common/filter-selector/filter-selector.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { TeamService } from './team/team.service';
     DriverGridComponent,
     FlagComponent,
     TeamCardComponent,
-    TeamGridComponent
+    TeamGridComponent,
+    FilterSelectorComponent
   ],
   imports: [
     BrowserModule,

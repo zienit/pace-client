@@ -7,6 +7,8 @@
                    (page)="onPage($event)">
     </mat-paginator>
 
+    <app-filter-selector [filters]="filters"></app-filter-selector>
+
     <div fxLayout="row wrap"
          fxLayoutAlign="start"
          class="driver-grid">

@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators';
 export class DriverGridComponent implements OnInit, OnDestroy {
 
   drivers: Driver[];
+  filters: { name: string, selected: boolean }[];
   pageIndex: number = 0;
   pageSize: number = 0;
   columnCount: Observable<number>;
@@ -36,6 +37,11 @@ export class DriverGridComponent implements OnInit, OnDestroy {
       }
     }));
     this.drivers = this.driverService.getDrivers();
+    const countries: string[] = this.drivers.reduce(
+      (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
+      []
+    );
+    this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
 
     // when column count change, reset the pagination so that item currenly in top-left position remains visible.
     this.resetPagination = this.columnCount.subscribe(cc => {
