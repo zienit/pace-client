@@ -21,6 +21,7 @@ export class FlagComponent implements OnInit {
     'can': { row: 0, col: 9 },
     'bel': { row: 1, col: 0 },
     'nld': { row: 1, col: 1 },
+    'che': { row: 1, col: 2 },
     'rus': { row: 1, col: 8 },
     'aut': { row: 1, col: 9 },
     'mex': { row: 2, col: 1 },
@@ -34,10 +35,10 @@ export class FlagComponent implements OnInit {
   get style() {
     return {
       'background-image': 'url(https://us-east-1-cdn-ui.motorsport.com/817/design/dist/components/flags/flags-50x30/flags-100x60-1_466a02afa94e0eb8371f35e15bb7583d.png)',
-      'width': '100px',
-      'height': '60px',
-      'background-position-x': this.countries[this.country].col * -100 + 'px',
-      'background-position-y': this.countries[this.country].row * -60 + 'px'
+      'height': '100%',
+      'background-size':'1000%',
+      'background-position-x': this.countries[this.country].col * -100 + '%',
+      'background-position-y': this.countries[this.country].row * -100 + '%'
     }
   };
 
