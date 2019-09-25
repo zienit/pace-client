@@ -1,7 +1,7 @@
 <div fxLayout="column"
      fxLayoutAlign="start center">
     <mat-paginator *ngIf="(columnCount | async) > 1"
-                   [length]="drivers.length"
+                   [length]="allDrivers.length"
                    [pageIndex]="pageIndex"
                    [pageSize]="pageSize"
                    (page)="onPage($event)">
@@ -15,7 +15,7 @@
         <app-driver-card fxFlex.xs="0 1 100%"
                          fxFlex.sm="0 1 calc(33.3% - 8px)"
                          fxFlex.gt-sm="0 1 calc(25% - 8px)"
-                         *ngFor="let driver of (drivers | slice : pageIndex * pageSize : pageIndex * pageSize + pageSize)"
+                         *ngFor="let driver of drivers | async"
                          [driver]="driver">
         </app-driver-card>
     </div>
