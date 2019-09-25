@@ -1,14 +1,20 @@
 <div fxLayout="column"
      fxLayoutAlign="start center">
+    <mat-paginator *ngIf="(columnCount | async) > 1"
+                   [length]="drivers.length"
+                   [pageIndex]="pageIndex"
+                   [pageSize]="pageSize"
+                   (page)="onPage($event)">
+    </mat-paginator>
+
     <div fxLayout="row wrap"
          fxLayoutAlign="start"
-         fxLayoutGap="16px"
          class="driver-grid">
         <app-driver-card fxFlex.xs="0 1 100%"
-                         fxFlex.sm="0 1 calc(50% - 32px)"
-                         fxFlex.gt-sm="0 1 calc(33.3% - 32px)"
-                         *ngFor="let driver of drivers"
-                         [driver] = "driver">
+                         fxFlex.sm="0 1 calc(33.3% - 8px)"
+                         fxFlex.gt-sm="0 1 calc(25% - 8px)"
+                         *ngFor="let driver of (drivers | slice : pageIndex * pageSize : pageIndex * pageSize + pageSize)"
+                         [driver]="driver">
         </app-driver-card>
     </div>
 </div>
