@@ -15,7 +15,9 @@ export class DriverGridComponent implements OnInit, OnDestroy {
 
   allDrivers: Driver[];
   drivers: BehaviorSubject<Driver[]>;
+  filteredDriversSize: BehaviorSubject<number>;
   filters: { name: string, selected: boolean }[];
+  selectedCountries: string[] = [];
   pageIndex: number = 0;
   pageSize: number = 0;
   columnCount: Observable<number>;
@@ -38,12 +40,14 @@ export class DriverGridComponent implements OnInit, OnDestroy {
       }
     }));
     this.allDrivers = this.driverService.getDrivers();
-    this.drivers = new BehaviorSubject<Driver[]>(this.allDrivers);
-    // const countries: string[] = this.drivers.reduce(
-    //   (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
-    //   []
-    // );
-    // this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
+    this.drivers = new BehaviorSubject(this.allDrivers);
+    this.filteredDriversSize = new BehaviorSubject(this.allDrivers.length);
+
+    const countries: string[] = this.drivers.value.reduce(
+      (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
+      []
+    );
+    this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
 
     // when column count change, reset the pagination so that item currenly in top-left position remains visible.
     this.resetPagination = this.columnCount.subscribe(cc => {
@@ -66,10 +70,28 @@ export class DriverGridComponent implements OnInit, OnDestroy {
     this.drivers.next(this.pagedDrivers());
   }
 
+  onChange(countries: string[]) {
+    console.log(countries);
+    console.log(this.filters);
+    this.selectedCountries = countries;
+    this.drivers.next(this.pagedDrivers());
+  }
+
+  private filteredDrivers() {
+    const filtered = this.selectedCountries.length == 0
+      ? this.allDrivers
+      : this.allDrivers.filter(d => this.selectedCountries.includes(d.country));
+
+    // @todo don't do this here as a side-effect !
+    this.filteredDriversSize.next(filtered.length);
+
+    return filtered;
+  }
+
   private pagedDrivers() {
     const from = this.pageIndex * this.pageSize;
     const to = from + this.pageSize;
-    return this.allDrivers.slice(from, to);
+    return this.filteredDrivers().slice(from, to);
   }
 
   ngOnDestroy() {

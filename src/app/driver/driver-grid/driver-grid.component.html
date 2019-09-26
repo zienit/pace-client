@@ -1,13 +1,14 @@
 <div fxLayout="column"
      fxLayoutAlign="start center">
     <mat-paginator *ngIf="(columnCount | async) > 1"
-                   [length]="allDrivers.length"
+                   [length]="filteredDriversSize | async"
                    [pageIndex]="pageIndex"
                    [pageSize]="pageSize"
                    (page)="onPage($event)">
     </mat-paginator>
 
-    <app-filter-selector [filters]="filters"></app-filter-selector>
+    <app-filter-selector [filters]="filters"
+                         (change)="onChange($event)"></app-filter-selector>
 
     <div fxLayout="row wrap"
          fxLayoutAlign="start"

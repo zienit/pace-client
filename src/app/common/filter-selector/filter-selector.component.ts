@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-filter-selector',
@@ -7,14 +7,21 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class FilterSelectorComponent implements OnInit {
 
+  // @todo immutable: https://angular-2-training-book.rangle.io/change-detection/change_detection_strategy_onpush
+  @Input() filters: { name: string, selected: boolean }[];
+  @Output() change = new EventEmitter<string[]>();
+
   constructor() { }
 
   ngOnInit() {
   }
 
-  @Input() filters: { name: string, selected: boolean }[];
-
   onClick(filter: { selected: boolean }) {
     filter.selected = !filter.selected;
+    this.change.emit(
+      this.filters
+        .filter(f => f.selected)
+        .map(f => f.name)
+    );
   }
 }
