@@ -13,16 +13,28 @@ import { map } from 'rxjs/operators';
 })
 export class DriverGridComponent implements OnInit, OnDestroy {
 
-  allDrivers: Driver[];
-  drivers: BehaviorSubject<Driver[]>;
-  filteredDriversSize: BehaviorSubject<number>;
+  private allDrivers: Driver[];
+  readonly drivers: BehaviorSubject<Driver[]> = new BehaviorSubject([]);
+
+  readonly filteredDrivers = this.drivers.pipe(map(d =>
+    this.selectedCountries.length == 0
+      ? d
+      : d.filter(d => this.selectedCountries.includes(d.country))
+  ));
+
+  readonly pagedDrivers = this.filteredDrivers.pipe(map(d => {
+    const from = this.pageIndex * this.pageSize;
+    const to = from + this.pageSize;
+    return d.slice(from, to);
+  }));
+
   filters: { name: string, selected: boolean }[];
-  selectedCountries: string[] = [];
+  private selectedCountries: string[] = [];
   pageIndex: number = 0;
   pageSize: number = 0;
   columnCount: Observable<number>;
-  resetPagination: Subscription;
-
+  private resetPagination: Subscription;
+  
   constructor(
     private mediaObserver: MediaObserver,
     private driverService: DriverService
@@ -39,9 +51,9 @@ export class DriverGridComponent implements OnInit, OnDestroy {
           return 4;
       }
     }));
+    
     this.allDrivers = this.driverService.getDrivers();
-    this.drivers = new BehaviorSubject(this.allDrivers);
-    this.filteredDriversSize = new BehaviorSubject(this.allDrivers.length);
+    this.drivers.next(this.allDrivers);
 
     const countries: string[] = this.drivers.value.reduce(
       (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
@@ -49,7 +61,6 @@ export class DriverGridComponent implements OnInit, OnDestroy {
     );
     this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
 
-    // when column count change, reset the pagination so that item currenly in top-left position remains visible.
     this.resetPagination = this.columnCount.subscribe(cc => {
       if (cc == 1) {
         // paginator is removed from DOM
@@ -57,41 +68,23 @@ export class DriverGridComponent implements OnInit, OnDestroy {
         this.pageSize = this.drivers.value.length;
 
       } else {
+        // reset the pagination so that item currenly in top-left position remains visible.
         this.pageIndex = Math.floor((this.pageIndex * this.pageSize) / (cc * 2));
         this.pageSize = cc * 2;
       }
-      this.drivers.next(this.pagedDrivers());
+      this.drivers.next(this.allDrivers);
     })
   }
 
   onPage(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.drivers.next(this.pagedDrivers());
+    this.drivers.next(this.allDrivers);
   }
 
   onChange(countries: string[]) {
-    console.log(countries);
-    console.log(this.filters);
     this.selectedCountries = countries;
-    this.drivers.next(this.pagedDrivers());
-  }
-
-  private filteredDrivers() {
-    const filtered = this.selectedCountries.length == 0
-      ? this.allDrivers
-      : this.allDrivers.filter(d => this.selectedCountries.includes(d.country));
-
-    // @todo don't do this here as a side-effect !
-    this.filteredDriversSize.next(filtered.length);
-
-    return filtered;
-  }
-
-  private pagedDrivers() {
-    const from = this.pageIndex * this.pageSize;
-    const to = from + this.pageSize;
-    return this.filteredDrivers().slice(from, to);
+    this.drivers.next(this.allDrivers);
   }
 
   ngOnDestroy() {
