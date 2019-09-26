@@ -18,7 +18,7 @@ export class DriverGridComponent implements OnInit, OnDestroy {
     private readonly driverService: DriverService
   ) { }
 
-  private allDrivers: Driver[];
+  private allDrivers: Driver[] = [];
   private readonly driversSubject: BehaviorSubject<Driver[]> = new BehaviorSubject([]);
 
   readonly filteredDrivers = this.driversSubject.pipe(map(d =>
