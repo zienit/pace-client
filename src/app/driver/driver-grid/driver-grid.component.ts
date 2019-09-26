@@ -13,10 +13,15 @@ import { map } from 'rxjs/operators';
 })
 export class DriverGridComponent implements OnInit, OnDestroy {
 
-  private allDrivers: Driver[];
-  readonly drivers: BehaviorSubject<Driver[]> = new BehaviorSubject([]);
+  constructor(
+    private readonly mediaObserver: MediaObserver,
+    private readonly driverService: DriverService
+  ) { }
 
-  readonly filteredDrivers = this.drivers.pipe(map(d =>
+  private allDrivers: Driver[];
+  private readonly driversSubject: BehaviorSubject<Driver[]> = new BehaviorSubject([]);
+
+  readonly filteredDrivers = this.driversSubject.pipe(map(d =>
     this.selectedCountries.length == 0
       ? d
       : d.filter(d => this.selectedCountries.includes(d.country))
@@ -32,59 +37,52 @@ export class DriverGridComponent implements OnInit, OnDestroy {
   private selectedCountries: string[] = [];
   pageIndex: number = 0;
   pageSize: number = 0;
-  columnCount: Observable<number>;
-  private resetPagination: Subscription;
-  
-  constructor(
-    private mediaObserver: MediaObserver,
-    private driverService: DriverService
-  ) { }
+
+  readonly columnCount: Observable<number> = this.mediaObserver.media$.pipe(map(mc => {
+    switch (mc.mqAlias) {
+      case 'xs':
+        return 1;
+      case 'sm':
+        return 3;
+      default:
+        return 4;
+    }
+  }));
+
+  private readonly resetPagination: Subscription = this.columnCount.subscribe(cc => {
+    if (cc == 1) {
+      // paginator is removed from DOM
+      this.pageIndex = 0;
+      this.pageSize = this.allDrivers.length;
+    } else {
+      // reset the pagination so that item currenly in top-left position remains visible.
+      this.pageIndex = Math.floor((this.pageIndex * this.pageSize) / (cc * 2));
+      this.pageSize = cc * 2;
+    }
+    this.driversSubject.next(this.allDrivers);
+  });
 
   ngOnInit() {
-    this.columnCount = this.mediaObserver.media$.pipe(map(mc => {
-      switch (mc.mqAlias) {
-        case 'xs':
-          return 1;
-        case 'sm':
-          return 3;
-        default:
-          return 4;
-      }
-    }));
-    
-    this.allDrivers = this.driverService.getDrivers();
-    this.drivers.next(this.allDrivers);
-
-    const countries: string[] = this.drivers.value.reduce(
-      (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
-      []
-    );
-    this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
-
-    this.resetPagination = this.columnCount.subscribe(cc => {
-      if (cc == 1) {
-        // paginator is removed from DOM
-        this.pageIndex = 0;
-        this.pageSize = this.drivers.value.length;
-
-      } else {
-        // reset the pagination so that item currenly in top-left position remains visible.
-        this.pageIndex = Math.floor((this.pageIndex * this.pageSize) / (cc * 2));
-        this.pageSize = cc * 2;
-      }
-      this.drivers.next(this.allDrivers);
-    })
+    this.driverService.getDrivers().subscribe(d => {
+      this.allDrivers = d;
+      this.driversSubject.next(d);
+      const countries: string[] = d.reduce(
+        (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
+        []
+      );
+      this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
+    });
   }
 
   onPage(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.drivers.next(this.allDrivers);
+    this.driversSubject.next(this.allDrivers);
   }
 
   onChange(countries: string[]) {
     this.selectedCountries = countries;
-    this.drivers.next(this.allDrivers);
+    this.driversSubject.next(this.allDrivers);
   }
 
   ngOnDestroy() {

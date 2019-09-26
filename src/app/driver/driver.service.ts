@@ -1,4 +1,5 @@
 import { Driver } from './driver.model';
+import { Observable, of } from 'rxjs';
 
 export class DriverService {
 
@@ -25,7 +26,7 @@ export class DriverService {
         { name: 'Antonio Giovinazzi', image: 'https://www.formula1.com/content/fom-website/en/drivers/antonio-giovinazzi/_jcr_content/image.img.1920.medium.jpg/1554818879413.jpg', country: 'ita', driverNr: 99, abbr: 'GIO' }
     ]
 
-    getDrivers() {
-        return this.drivers.slice();
+    getDrivers() : Observable<Driver[]>{
+        return of(this.drivers.slice());
     }
 }
