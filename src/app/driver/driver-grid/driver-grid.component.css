@@ -1,8 +1,8 @@
 .driver-grid {
     width: 100%;
-    background-color: burlywood;
 }
 
 app-driver-card {
     margin: 4px;
+    overflow: hidden;
 }

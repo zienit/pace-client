@@ -1,5 +1,9 @@
+.mat-card-title {
+    height: 2em;
+}
+
 .driver-mugshot {
-    height: 300px;
+    height: 200px;
     background-size: auto 200%;
     background-repeat: no-repeat;
     background-position-x: center;

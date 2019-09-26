@@ -3,5 +3,7 @@ export interface Driver {
     image: string,
     country: string,
     driverNr: number,
-    abbr: string
+    abbr: string,
+    referenceDate: Date,
+    teamId: string,
 }

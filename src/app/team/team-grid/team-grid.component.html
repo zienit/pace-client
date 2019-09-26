@@ -1,6 +1,6 @@
 <div fxLayout="column"
      fxLayoutAlign="start center">
-    <mat-paginator *ngIf="(columnCount | async) > 1"
+    <mat-paginator *ngIf="(columnCount$ | async) > 1"
                    [length]="teams.length"
                    [pageIndex]="pageIndex"
                    [pageSize]="pageSize"

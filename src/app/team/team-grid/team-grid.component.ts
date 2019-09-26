@@ -16,7 +16,7 @@ export class TeamGridComponent implements OnInit, OnDestroy {
   teams: Team[];
   pageIndex: number = 0;
   pageSize: number = 0;
-  columnCount: Observable<number>;
+  columnCount$: Observable<number>;
   resetPagination: Subscription;
 
   constructor(
@@ -25,7 +25,7 @@ export class TeamGridComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.columnCount = this.mediaObserver.media$.pipe(map(mc => {
+    this.columnCount$ = this.mediaObserver.media$.pipe(map(mc => {
       switch (mc.mqAlias) {
         case 'xs':
           return 1;
@@ -35,10 +35,10 @@ export class TeamGridComponent implements OnInit, OnDestroy {
           return 4;
       }
     }));
-    this.teams = this.teamService.getTeams();
+    this.teamService.getTeams().subscribe(teams => this.teams = teams);
 
     // when column count change, reset the pagination so that item currenly in top-left position remains visible.
-    this.resetPagination = this.columnCount.subscribe(cc => {
+    this.resetPagination = this.columnCount$.subscribe(cc => {
       if (cc == 1) {
         // paginator is removed
         this.pageIndex = 0;
