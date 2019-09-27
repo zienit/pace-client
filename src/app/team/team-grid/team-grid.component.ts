@@ -1,10 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Team } from '../team.model';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MediaObserver } from '@angular/flex-layout';
 import { TeamService } from '../team.service';
 import { PageEvent } from '@angular/material';
+import { DriverService } from 'src/app/driver/driver.service';
+import { Driver } from 'src/app/driver/driver.model';
+
+interface TeamWithDrivers extends Team {
+  drivers: Driver[];
+};
 
 @Component({
   selector: 'app-team-grid',
@@ -13,16 +19,17 @@ import { PageEvent } from '@angular/material';
 })
 export class TeamGridComponent implements OnInit, OnDestroy {
 
-  teams: Team[];
+  constructor(
+    private readonly mediaObserver: MediaObserver,
+    private readonly teamService: TeamService,
+    private readonly driverService: DriverService
+  ) { }
+
+  teams: TeamWithDrivers[];
   pageIndex: number = 0;
   pageSize: number = 0;
   columnCount$: Observable<number>;
   resetPagination: Subscription;
-
-  constructor(
-    private mediaObserver: MediaObserver,
-    private teamService: TeamService
-  ) { }
 
   ngOnInit() {
     this.columnCount$ = this.mediaObserver.media$.pipe(map(mc => {
@@ -35,7 +42,17 @@ export class TeamGridComponent implements OnInit, OnDestroy {
           return 4;
       }
     }));
-    this.teamService.getTeams().subscribe(teams => this.teams = teams);
+    // this.teamService.getTeams().subscribe(teams => this.teams = teams);
+    forkJoin(
+      this.teamService.getTeams(),
+      this.driverService.getDrivers()
+    ).subscribe(([teams, drivers]) => {
+      this.teams = teams.map(team => {
+        const teamDrivers = drivers
+          .filter(d => team.driverId.includes(d.id));
+        return { ...team, drivers: teamDrivers };
+      });
+    });
 
     // when column count change, reset the pagination so that item currenly in top-left position remains visible.
     this.resetPagination = this.columnCount$.subscribe(cc => {

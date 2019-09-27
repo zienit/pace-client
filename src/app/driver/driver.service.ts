@@ -56,14 +56,23 @@ export class DriverService {
             return {
                 ...d,
                 referenceDate: new Date(),
-                teamId: this.getTeam(d.id)
+                teamId: this.getDriverTeam(d.id)
             };
         }));
     }
 
-    private getTeam(driverId: string, referenceDate: Date = new Date()): string {
+    private getDriverTeam(driverId: string, referenceDate: Date = new Date()): string {
         const periods: TeamPeriod[] = this.driverTeams[driverId];
         const period = periods.find(p => p.from <= referenceDate && (p.to == null || referenceDate < p.to));
         return period ? period.teamId : null;
+    }
+
+    getTeamDrivers(teamId: string, referenceDate: Date = new Date()): Observable<string[]> {
+        const drivers = Object.entries(this.driverTeams)
+            .filter(([_, periods]) => periods
+                .find(p => p.teamId === teamId && p.from <= referenceDate && (p.to == null || referenceDate < p.to))
+            )
+            .map(([driver, _]) => driver);
+        return of(drivers);
     }
 }

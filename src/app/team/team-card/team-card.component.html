@@ -1,11 +1,19 @@
 <mat-card>
-    <mat-card-title>{{ team.name }}</mat-card-title>
     <div [ngStyle]="{'background-image':'url(' + team.image + ')'}"
          class="team-image"></div>
     <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="space-between">
+        <div fxLayout="row"
+             fxLayoutAlign="space-between center"
+             class="card-item">
+            <span class="team-name">{{ team.name }}</span>
             <app-flag [country]="team.country"></app-flag>
-            <span>CAR</span>
+        </div>
+        <div *ngFor="let driver of team.drivers"
+             fxLayout="row"
+             fxLayoutAlign="space-between center"
+             class="card-item">
+            <a>{{ driver.name }}</a>
+            <span class="driver-nr">{{ driver.driverNr}}</span>
         </div>
     </mat-card-content>
 </mat-card>

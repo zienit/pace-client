@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Team } from '../team.model';
+import { Driver } from 'src/app/driver/driver.model';
 
 @Component({
   selector: 'app-team-card',
@@ -8,7 +9,8 @@ import { Team } from '../team.model';
 })
 export class TeamCardComponent implements OnInit {
 
-  @Input() team : Team;
+  @Input() team: Team;
+  @Input() drivers: Driver[];
 
   constructor() { }
 

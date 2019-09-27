@@ -1,9 +1,18 @@
 import { Team } from './team.model';
-import { of, Observable } from 'rxjs';
+import { Observable, forkJoin, of } from 'rxjs';
+import { map, flatMap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { DriverService } from '../driver/driver.service';
 
+type TeamData = { id: string, name: string, image: string, country: string };
+
+@Injectable()
 export class TeamService {
 
-    private teams: Team[] = [
+    constructor(private readonly driverService: DriverService) {
+    }
+
+    private readonly teams: TeamData[] = [
         { id: '6c445b98', name: 'Mercedes', image: 'https://www.formula1.com/content/fom-website/en/teams/Mercedes/_jcr_content/logo.img.jpg/1486740144183.jpg', country: 'deu' },
         { id: '6e23e4fa', name: 'Ferrari', image: 'https://www.formula1.com/content/fom-website/en/teams/Ferrari/_jcr_content/logo.img.jpg/1521797345005.jpg', country: 'ita' },
         { id: '63c25685', name: 'Red Bull Racing', image: 'https://www.formula1.com/content/fom-website/en/teams/Red-Bull/_jcr_content/logo.img.jpg/1514762875081.jpg', country: 'aut' },
@@ -16,7 +25,19 @@ export class TeamService {
         { id: 'a9489bb1', name: 'Williams', image: 'https://www.formula1.com/content/fom-website/en/teams/Williams/_jcr_content/logo.img.png/1551261665481.png', country: 'gbr' },
     ];
 
-    getTeams(): Observable<Team[]> {
-        return of(this.teams.slice());
+    getTeams(referenceDate: Date = new Date()): Observable<Team[]> {
+        return of(this.teams)
+            .pipe(flatMap(teams => forkJoin(teams.map(t => this.getTeam(t, referenceDate)))));
+    }
+
+    private getTeam(team: TeamData, referenceDate: Date): Observable<Team> {
+        return this.driverService.getTeamDrivers(team.id, referenceDate)
+            .pipe(map(drivers => {
+                return {
+                    ...team,
+                    referenceDate: referenceDate,
+                    driverId: drivers
+                }
+            }));
     }
 }
