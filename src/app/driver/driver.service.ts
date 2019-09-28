@@ -1,5 +1,6 @@
 import { Driver } from './driver.model';
 import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 type TeamPeriod = { teamId: string, from: Date, to?: Date };
 
@@ -58,7 +59,7 @@ export class DriverService {
                 referenceDate: new Date(),
                 teamId: this.getDriverTeam(d.id)
             };
-        }));
+        })).pipe(delay(1000));
     }
 
     private getDriverTeam(driverId: string, referenceDate: Date = new Date()): string {

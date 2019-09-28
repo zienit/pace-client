@@ -1,24 +1,30 @@
-<div fxLayout="column"
-     fxLayoutAlign="start center">
-    <mat-paginator *ngIf="(columnCount$ | async) > 2"
-                   [length]="(filteredDrivers$ | async).length"
-                   [pageIndex]="pageIndex"
-                   [pageSize]="pageSize"
-                   (page)="onPage($event)">
-    </mat-paginator>
+<div *ngIf="isLoading; else loaded"
+     fxLayout="column"
+     fxLayoutAlign="center center"
+     class="loading"><mat-spinner></mat-spinner></div>
+<ng-template #loaded>
+    <div fxLayout="column"
+         fxLayoutAlign="start center">
+        <mat-paginator *ngIf="(columnCount$ | async) > 2"
+                       [length]="(filteredDrivers$ | async).length"
+                       [pageIndex]="pageIndex"
+                       [pageSize]="pageSize"
+                       (page)="onPage($event)">
+        </mat-paginator>
 
-    <app-filter-selector [filters]="filters"
-                         (change)="onChange($event)"></app-filter-selector>
+        <app-filter-selector [filters]="filters"
+                             (change)="onChange($event)"></app-filter-selector>
 
-    <div fxLayout="row wrap"
-         fxLayoutAlign="start"
-         class="driver-grid">
-        <app-driver-card fxFlex.xs="0 1 calc(50% - 8px)"
-                         fxFlex.sm="0 1 calc(25% - 8px)"
-                         fxFlex.gt-sm="0 1 calc(20% - 8px)"
-                         *ngFor="let driver of pagedDrivers$ | async"
-                         [driver]="driver"
-                         [team]="driver.team">
-        </app-driver-card>
+        <div fxLayout="row wrap"
+             fxLayoutAlign="start"
+             class="driver-grid">
+            <app-driver-card fxFlex.xs="0 1 calc(50% - 8px)"
+                             fxFlex.sm="0 1 calc(25% - 8px)"
+                             fxFlex.gt-sm="0 1 calc(20% - 8px)"
+                             *ngFor="let driver of pagedDrivers$ | async"
+                             [driver]="driver"
+                             [team]="driver.team">
+            </app-driver-card>
+        </div>
     </div>
-</div>
+</ng-template>

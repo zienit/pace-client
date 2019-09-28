@@ -44,6 +44,7 @@ export class DriverGridComponent implements OnInit, OnDestroy {
   private selectedCountries: string[] = [];
   pageIndex: number = 0;
   pageSize: number = 0;
+  isLoading = true;
 
   readonly columnCount$: Observable<number> = this.mediaObserver.media$.pipe(map(mc => {
     switch (mc.mqAlias) {
@@ -85,6 +86,7 @@ export class DriverGridComponent implements OnInit, OnDestroy {
         []
       );
       this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
+      this.isLoading = false;
     });
   }
 

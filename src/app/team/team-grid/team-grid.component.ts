@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Team } from '../team.model';
-import { Observable, Subscription, forkJoin } from 'rxjs';
+import { Observable, Subscription, forkJoin, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MediaObserver } from '@angular/flex-layout';
 import { TeamService } from '../team.service';
@@ -25,56 +25,62 @@ export class TeamGridComponent implements OnInit, OnDestroy {
     private readonly driverService: DriverService
   ) { }
 
-  teams: TeamWithDrivers[];
+  allTeams: TeamWithDrivers[] = [];
+  private readonly teamsSubject$: BehaviorSubject<Team[]> = new BehaviorSubject([]);
+
+  readonly pagedTeams$: Observable<Team[]> = this.teamsSubject$.pipe(map(t => {
+    console.log("paging...")
+    const from = this.pageIndex * this.pageSize;
+    const to = from + this.pageSize;
+    return t.slice(from, to);
+  }));
+
   pageIndex: number = 0;
   pageSize: number = 0;
-  columnCount$: Observable<number>;
-  resetPagination: Subscription;
+  readonly columnCount$: Observable<number> = this.mediaObserver.media$.pipe(map(mc => {
+    switch (mc.mqAlias) {
+      case 'xs':
+        return 1;
+      case 'sm':
+        return 3;
+      default:
+        return 4;
+    }
+  }));
+  private readonly resetPagination: Subscription = this.columnCount$.subscribe(cc => {
+    if (cc == 1) {
+      // paginator is removed
+      this.pageIndex = 0;
+      this.pageSize = this.allTeams.length;
+
+    } else {
+      this.pageIndex = Math.floor((this.pageIndex * this.pageSize) / (cc * 2));
+      this.pageSize = cc * 2;
+    }
+    this.teamsSubject$.next(this.allTeams);
+  });
 
   ngOnInit() {
-    this.columnCount$ = this.mediaObserver.media$.pipe(map(mc => {
-      switch (mc.mqAlias) {
-        case 'xs':
-          return 1;
-        case 'sm':
-          return 3;
-        default:
-          return 4;
-      }
-    }));
-    // this.teamService.getTeams().subscribe(teams => this.teams = teams);
     forkJoin(
       this.teamService.getTeams(),
       this.driverService.getDrivers()
     ).subscribe(([teams, drivers]) => {
-      this.teams = teams.map(team => {
+      this.allTeams = teams.map(team => {
         const teamDrivers = drivers
           .filter(d => team.driverId.includes(d.id));
         return { ...team, drivers: teamDrivers };
       });
+      this.teamsSubject$.next(this.allTeams);
     });
-
-    // when column count change, reset the pagination so that item currenly in top-left position remains visible.
-    this.resetPagination = this.columnCount$.subscribe(cc => {
-      if (cc == 1) {
-        // paginator is removed
-        this.pageIndex = 0;
-        this.pageSize = this.teams.length;
-
-      } else {
-        this.pageIndex = Math.floor((this.pageIndex * this.pageSize) / (cc * 2));
-        this.pageSize = cc * 2;
-      }
-    })
   }
 
   onPage(event: PageEvent) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+    this.teamsSubject$.next(this.allTeams);
   }
 
   ngOnDestroy() {
     this.resetPagination.unsubscribe();
   }
-
 }
