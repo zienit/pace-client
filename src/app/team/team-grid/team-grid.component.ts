@@ -37,6 +37,8 @@ export class TeamGridComponent implements OnInit, OnDestroy {
 
   pageIndex: number = 0;
   pageSize: number = 0;
+  isLoading = true;
+
   readonly columnCount$: Observable<number> = this.mediaObserver.media$.pipe(map(mc => {
     switch (mc.mqAlias) {
       case 'xs':
@@ -71,6 +73,7 @@ export class TeamGridComponent implements OnInit, OnDestroy {
         return { ...team, drivers: teamDrivers };
       });
       this.teamsSubject$.next(this.allTeams);
+      this.isLoading = false;
     });
   }
 

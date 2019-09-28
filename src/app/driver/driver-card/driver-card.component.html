@@ -1,13 +1,13 @@
 <mat-card>
-    <mat-card-title>{{ driver.name }}</mat-card-title>
     <div [ngStyle]="{'background-image':'url(' + driver.image + ')'}"
          class="driver-mugshot"></div>
     <mat-card-content>
+        <div class="driver-name">{{ driver.name }}</div>
         <div fxLayout="row"
              fxLayoutAlign="space-between center">
             <app-flag [country]="driver.country"></app-flag>
             <span class="driver-nr">{{ driver.driverNr}}</span>
         </div>
-        <p>{{ team?.name }}</p>
+        <div>{{ team?.name }}</div>
     </mat-card-content>
 </mat-card>

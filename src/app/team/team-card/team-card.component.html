@@ -3,15 +3,13 @@
          class="team-image"></div>
     <mat-card-content>
         <div fxLayout="row"
-             fxLayoutAlign="space-between center"
-             class="card-item">
+             fxLayoutAlign="space-between first">
             <span class="team-name">{{ team.name }}</span>
             <app-flag [country]="team.country"></app-flag>
         </div>
         <div *ngFor="let driver of team.drivers"
              fxLayout="row"
-             fxLayoutAlign="space-between center"
-             class="card-item">
+             fxLayoutAlign="space-between center">
             <a>{{ driver.name }}</a>
             <span class="driver-nr">{{ driver.driverNr}}</span>
         </div>

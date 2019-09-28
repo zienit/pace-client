@@ -7,12 +7,14 @@
     margin: 0px -16px 16px;
 }
 
-.card-item {
+mat-card-content > div {
     margin-bottom: 4px;
 }
 
 .team-name {
     font-size: 24px;
+    height: 2.3em;
+    overflow: hidden;
 }
 
 .driver-nr {
@@ -28,5 +30,6 @@
 
 app-flag {
     width: 50px;
+    min-width: 50px;
     height: 30px;
 }
