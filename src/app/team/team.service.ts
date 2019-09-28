@@ -1,6 +1,6 @@
 import { Team } from './team.model';
 import { Observable, forkJoin, of } from 'rxjs';
-import { map, flatMap } from 'rxjs/operators';
+import { map, flatMap, delay } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { DriverService } from '../driver/driver.service';
 
@@ -27,7 +27,10 @@ export class TeamService {
 
     getTeams(referenceDate: Date = new Date()): Observable<Team[]> {
         return of(this.teams)
-            .pipe(flatMap(teams => forkJoin(teams.map(t => this.getTeam(t, referenceDate)))));
+            .pipe(
+                flatMap(teams => forkJoin(teams.map(t => this.getTeam(t, referenceDate)))),
+                delay(1000)
+            );
     }
 
     private getTeam(team: TeamData, referenceDate: Date): Observable<Team> {

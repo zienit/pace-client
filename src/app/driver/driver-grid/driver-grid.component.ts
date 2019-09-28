@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DriverService } from '../driver.service';
 import { Driver } from '../driver.model';
-import { PageEvent } from '@angular/material';
+import { PageEvent, MatSnackBar } from '@angular/material';
 import { MediaObserver } from '@angular/flex-layout';
 import { Observable, Subscription, BehaviorSubject, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -22,7 +22,8 @@ export class DriverGridComponent implements OnInit, OnDestroy {
   constructor(
     private readonly mediaObserver: MediaObserver,
     private readonly driverService: DriverService,
-    private readonly teamService: TeamService
+    private readonly teamService: TeamService,
+    private readonly snackbar: MatSnackBar
   ) { }
 
   private allDrivers: DriverWithTeam[] = [];
@@ -45,6 +46,7 @@ export class DriverGridComponent implements OnInit, OnDestroy {
   pageIndex: number = 0;
   pageSize: number = 0;
   isLoading = true;
+  error: string = null;
 
   readonly columnCount$: Observable<number> = this.mediaObserver.media$.pipe(map(mc => {
     switch (mc.mqAlias) {
@@ -72,6 +74,31 @@ export class DriverGridComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+    // forkJoin(
+    //   this.driverService.getDrivers(),
+    //   this.teamService.getTeams()
+    // ).subscribe(([drivers, teams]) => {
+    //   this.allDrivers = drivers.map(driver => {
+    //     const team = teams.find(t => t.id === driver.teamId);
+    //     return { ...driver, team: team };
+    //   });
+    //   this.driversSubject$.next(drivers);
+    //   const countries: string[] = drivers.reduce(
+    //     (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
+    //     []
+    //   );
+    //   this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
+    //   this.isLoading = false;
+    //   this.snackbar.open(`Loaded ${this.allDrivers.length} drivers`, null, { duration: 2000 });
+    // }, err => {
+    //   this.isLoading = false;
+    //   this.error = err.message;
+    // });
+    this.load();
+  }
+
+  private load() {
+    this.isLoading = true;
     forkJoin(
       this.driverService.getDrivers(),
       this.teamService.getTeams()
@@ -87,7 +114,15 @@ export class DriverGridComponent implements OnInit, OnDestroy {
       );
       this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
       this.isLoading = false;
+      this.snackbar.open(`Loaded ${this.allDrivers.length} drivers`, null, { duration: 2000 });
+    }, err => {
+      this.isLoading = false;
+      this.error = err.message;
     });
+  }
+
+  onRetry() {
+    this.load();
   }
 
   onPage(event: PageEvent) {
