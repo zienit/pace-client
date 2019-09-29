@@ -60,8 +60,14 @@ export class DriverService {
                 teamId: this.getDriverTeam(d.id)
             };
         })).pipe(
-            delay(1000),
-            map(x => { throw new Error('darn!'); })
+            delay(300),
+            map(x => {
+                if (Math.random() < .5) {
+                    throw new Error('darn! something went wrong trying to download data...')
+                } else {
+                    return x;
+                }
+            })
         );
     }
 

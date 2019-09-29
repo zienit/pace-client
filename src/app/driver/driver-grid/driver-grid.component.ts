@@ -73,27 +73,6 @@ export class DriverGridComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
-
-    // forkJoin(
-    //   this.driverService.getDrivers(),
-    //   this.teamService.getTeams()
-    // ).subscribe(([drivers, teams]) => {
-    //   this.allDrivers = drivers.map(driver => {
-    //     const team = teams.find(t => t.id === driver.teamId);
-    //     return { ...driver, team: team };
-    //   });
-    //   this.driversSubject$.next(drivers);
-    //   const countries: string[] = drivers.reduce(
-    //     (countries, driver) => countries.includes(driver.country) ? countries : [...countries, driver.country],
-    //     []
-    //   );
-    //   this.filters = countries.sort().map(c => { return { name: c, selected: false }; });
-    //   this.isLoading = false;
-    //   this.snackbar.open(`Loaded ${this.allDrivers.length} drivers`, null, { duration: 2000 });
-    // }, err => {
-    //   this.isLoading = false;
-    //   this.error = err.message;
-    // });
     this.load();
   }
 
@@ -122,6 +101,7 @@ export class DriverGridComponent implements OnInit, OnDestroy {
   }
 
   onRetry() {
+    this.error = null;
     this.load();
   }
 

@@ -1,0 +1,17 @@
+<div *ngIf="open"
+     @bannerTrigger
+     (@bannerTrigger.done)="onTriggerDone($event)"
+     class="banner"
+     fxLayout="column"
+     fxLayoutAlign="end">
+    <p>{{ message }}</p>
+    <div fxLayout="row"
+         fxLayoutAlign="end">
+        <button *ngIf="dismiss"
+                mat-button
+                (click)="onClose(false)">{{ dismiss }}</button>
+        <button *ngIf="confirm"
+                mat-button
+                (click)="onClose(true)">{{ confirm }}</button>
+    </div>
+</div>

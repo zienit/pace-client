@@ -29,7 +29,6 @@ export class TeamGridComponent implements OnInit, OnDestroy {
   private readonly teamsSubject$: BehaviorSubject<Team[]> = new BehaviorSubject([]);
 
   readonly pagedTeams$: Observable<Team[]> = this.teamsSubject$.pipe(map(t => {
-    console.log("paging...")
     const from = this.pageIndex * this.pageSize;
     const to = from + this.pageSize;
     return t.slice(from, to);
@@ -38,6 +37,7 @@ export class TeamGridComponent implements OnInit, OnDestroy {
   pageIndex: number = 0;
   pageSize: number = 0;
   isLoading = true;
+  error: string = null;
 
   readonly columnCount$: Observable<number> = this.mediaObserver.media$.pipe(map(mc => {
     switch (mc.mqAlias) {
@@ -63,6 +63,11 @@ export class TeamGridComponent implements OnInit, OnDestroy {
   });
 
   ngOnInit() {
+    this.load();
+  }
+
+  load() {
+    this.isLoading = true;
     forkJoin(
       this.teamService.getTeams(),
       this.driverService.getDrivers()
@@ -74,7 +79,15 @@ export class TeamGridComponent implements OnInit, OnDestroy {
       });
       this.teamsSubject$.next(this.allTeams);
       this.isLoading = false;
+    }, err => {
+      this.isLoading = false;
+      this.error = err.message;
     });
+  }
+
+  onRetry() {
+    this.error = null;
+    this.load();
   }
 
   onPage(event: PageEvent) {

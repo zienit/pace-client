@@ -5,7 +5,11 @@
     <mat-spinner></mat-spinner>
 </div>
 <ng-template #loaded>
-    <div fxLayout="column"
+    <app-banner [message]="error"
+                confirm="Retry"
+                (action)="onRetry()"></app-banner>
+    <div *ngIf="!error"
+         fxLayout="column"
          fxLayoutAlign="start center">
         <mat-paginator *ngIf="(columnCount$ | async) > 1"
                        [length]="allTeams.length"
