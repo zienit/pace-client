@@ -1,0 +1,8 @@
+<div fxLayout="column"
+     fxLayoutAlign="start center">
+    <mat-accordion togglePosition="before">
+        <app-event-list-item *ngFor="let gp of filteredGrandsPrix$ | async"
+                         [gp]="gp">
+        </app-event-list-item>
+    </mat-accordion>
+</div>

@@ -19,6 +19,9 @@ import { TeamGridComponent } from './team/team-grid/team-grid.component';
 import { TeamService } from './team/team.service';
 import { FilterSelectorComponent } from './common/filter-selector/filter-selector.component';
 import { BannerComponent } from './common/banner/banner.component';
+import { EventListComponent } from './event/event-list/event-list.component';
+import { EventService } from './event/event.service';
+import { EventListItemComponent } from './event/event-list-item/event-list-item.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,9 @@ import { BannerComponent } from './common/banner/banner.component';
     TeamCardComponent,
     TeamGridComponent,
     FilterSelectorComponent,
-    BannerComponent
+    BannerComponent,
+    EventListComponent,
+    EventListItemComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +49,8 @@ import { BannerComponent } from './common/banner/banner.component';
   ],
   providers: [
     DriverService,
-    TeamService
+    TeamService,
+    EventService
   ],
   bootstrap: [AppComponent]
 })
