@@ -1,12 +1,12 @@
 <div fxLayout="row"
-     fxLayoutAlign="start center">
+     fxLayoutAlign="start end">
     <app-flag [country]="gp.country"
               fxFlex="0 0 50px">
     </app-flag>
+    <!-- fxFlex.xs="1 0 200px" -->
     <div class="gp-name"
-         fxFlex.xs="0 1 200px"
-         fxFlex.gt-xs="1 0 380px"
-         fxFlexAlign="end">
+         fxFlex.xs="200px"
+         fxFlex.gt-xs="380px">
         <span>{{ gp.name | uppercase }}</span>
     </div>
     <div fxLayout="column"

@@ -1,5 +1,3 @@
-import { from } from 'rxjs'
-
 export interface Session {
     type: SessionType;
     date: Date;
