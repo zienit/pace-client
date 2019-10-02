@@ -22,6 +22,8 @@ import { BannerComponent } from './common/banner/banner.component';
 import { EventListComponent } from './event/event-list/event-list.component';
 import { EventService } from './event/event.service';
 import { EventListItemComponent } from './event/event-list-item/event-list-item.component';
+import { EventListContentComponent } from './event/event-list-content/event-list-content.component';
+import { SessionTypePipe } from './event/session-type.pipe';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { EventListItemComponent } from './event/event-list-item/event-list-item.
     FilterSelectorComponent,
     BannerComponent,
     EventListComponent,
-    EventListItemComponent
+    EventListItemComponent,
+    EventListContentComponent,
+    SessionTypePipe
   ],
   imports: [
     BrowserModule,

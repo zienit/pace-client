@@ -10,6 +10,13 @@ export class EventService {
             { type: SessionType.FP3, date: new Date(2019, 2, 16, 14) },
             { type: SessionType.Q1, date: new Date(2019, 2, 16, 17) },
             { type: SessionType.R, date: new Date(2019, 2, 17, 16, 10) }
+        ]),
+        new GrandPrix('6b9e2e54', 'Bahrein GP', 'bhr', [
+            { type: SessionType.FP1, date: new Date(2019, 2, 29, 12) },
+            { type: SessionType.FP2, date: new Date(2019, 2, 29, 16) },
+            { type: SessionType.FP3, date: new Date(2019, 2, 30, 13) },
+            { type: SessionType.Q1, date: new Date(2019, 2, 30, 16) },
+            { type: SessionType.R, date: new Date(2019, 2, 31, 17, 10) }
         ])
     ];
 

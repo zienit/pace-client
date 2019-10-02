@@ -1,32 +1,23 @@
-<mat-expansion-panel>
-    <mat-expansion-panel-header>
-        <div fxLayout="row"
-             fxLayoutAlign="start center">
-            <app-flag [country]="gp.country"></app-flag>
-            <div class="gp-name"
-                 fxLayout="column"
-                 fxLayoutAlign="end start">
-                <span>{{ gp.name | uppercase }}</span>
-            </div>
-            <div fxLayout="column"
-                 fxLayoutAlign="start end">
-                <span class="day">{{ gp.from | date : 'dd' }}</span>
-                <span class="month">{{ gp.from | date : 'LLL' | uppercase }}</span>
-            </div>
-            <span class="date-seperator">-</span>
-            <div fxLayout="column"
-                 fxLayoutAlign="start end">
-                <span class="day">{{ gp.to | date : 'dd' }}</span>
-                <span class="month">{{ gp.to | date : 'LLL' | uppercase}}</span>
-            </div>
-        </div>
-    </mat-expansion-panel-header>
-
-    <div *ngFor="let group of groupedSessions">
-        <p>{{ group[0].date | date : 'dd' }}</p>
-        <div *ngFor="let session of group">
-            <p>{{ session.date | date }}</p>
-        </div>
-
+<div fxLayout="row"
+     fxLayoutAlign="start center">
+    <app-flag [country]="gp.country"
+              fxFlex="0 0 50px">
+    </app-flag>
+    <div class="gp-name"
+         fxFlex.xs="0 1 200px"
+         fxFlex.gt-xs="1 0 380px"
+         fxFlexAlign="end">
+        <span>{{ gp.name | uppercase }}</span>
     </div>
-</mat-expansion-panel>
+    <div fxLayout="column"
+         fxLayoutAlign="start end">
+        <span class="day">{{ gp.from | date : 'dd' }}</span>
+        <span class="month">{{ gp.from | date : 'LLL' | uppercase }}</span>
+    </div>
+    <span class="date-seperator">-</span>
+    <div fxLayout="column"
+         fxLayoutAlign="start end">
+        <span class="day">{{ gp.to | date : 'dd' }}</span>
+        <span class="month">{{ gp.to | date : 'LLL' | uppercase}}</span>
+    </div>
+</div>

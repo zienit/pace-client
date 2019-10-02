@@ -1,0 +1,22 @@
+<div fxLayout.gt-xs="row"
+     fxLayout.xs="column">
+    <div *ngFor="let group of groupedSessions"
+         fxLayout="column"
+         fxFlex="33.3%"
+         class="group">
+        <div fxLayout="row"
+             fxLayoutAlign="center center">
+            <span class="day">{{ group[0].date | date : 'dd' }}</span>&nbsp;
+            <span>{{ group[0].date | date : 'EEE' | uppercase }}</span>&nbsp;|&nbsp;
+            <span>{{ group[0].date | date : 'LLL' | uppercase }}</span>&nbsp;
+            <span>{{ group[0].date | date : 'yyyy' }}</span>
+        </div>
+        <div *ngFor="let session of group"
+             fxLayout="row"
+             fxLayoutAlign="space-between"
+             class="session">
+            <span>{{ session.type | sessionType }}</span>
+            <span>{{ session.date | date : 'h:mm aa'}}</span>
+        </div>
+    </div>
+</div>

@@ -12,35 +12,6 @@ export class EventListItemComponent implements OnInit {
 
   @Input() gp: GrandPrix;
 
-  private _groupedSessions: Session[][];
-
-  get groupedSessions(): Session[][] {
-    // if (!this._groupedSessions) {
-    //   this._groupedSessions = this.gp.sessions.reduce((groups, session) => {
-    //     const group = groups.find(g => {
-    //       const date = g[0].date;
-    //       // just day of the month is good enough
-    //       return date.getDate() == session.date.getDate();
-    //     })
-    //     // not nice mutation!
-    //     if (group) {
-    //       group.push(session);
-    //     } else {
-    //       groups.push([session]);
-    //     }
-    //     console.log(groups);
-    //     return groups;
-    //   }, [] as Session[][])
-    // }
-    // return this._groupedSessions;
-    return [
-      [this.gp.sessions[0],this.gp.sessions[1]],
-      [this.gp.sessions[2],this.gp.sessions[3]],
-      [this.gp.sessions[4]]
-    ];
-  }
-
   ngOnInit() {
   }
-
 }

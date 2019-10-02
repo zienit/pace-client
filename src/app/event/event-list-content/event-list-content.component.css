@@ -1,0 +1,25 @@
+.group:not(:first-child) {
+    border-left: 1px solid black;
+}
+
+.group {
+    margin-top: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.day {
+    font-size: 24px;
+    color: white;
+    background: black;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    margin-right: 10px;
+    line-height: 40px;
+}
+
+.session {
+    margin-top: 15px;
+}
