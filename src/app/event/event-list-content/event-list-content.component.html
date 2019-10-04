@@ -16,7 +16,12 @@
              fxLayoutAlign="space-between"
              class="session">
             <span>{{ session.type | sessionType }}</span>
-            <span>{{ session.date | date : 'h:mm aa'}}</span>
+            <span>{{ session.date | sessionDate : sessionTZ | date : 'h:mm aa'}}</span>
         </div>
     </div>
 </div>
+<mat-action-row>
+    <button mat-button
+            (click)="sessionTZ = sessionTZ ? null : gp.timezone">
+        Convert to {{ sessionTZ ? 'your local' : 'session' }} time</button>
+</mat-action-row>

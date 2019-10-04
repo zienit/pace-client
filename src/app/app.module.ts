@@ -24,6 +24,7 @@ import { EventService } from './event/event.service';
 import { EventListItemComponent } from './event/event-list-item/event-list-item.component';
 import { EventListContentComponent } from './event/event-list-content/event-list-content.component';
 import { SessionTypePipe } from './event/session-type.pipe';
+import { SessionDatePipe } from './event/session-date.pipe';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { SessionTypePipe } from './event/session-type.pipe';
     EventListComponent,
     EventListItemComponent,
     EventListContentComponent,
-    SessionTypePipe
+    SessionTypePipe,
+    SessionDatePipe
   ],
   imports: [
     BrowserModule,

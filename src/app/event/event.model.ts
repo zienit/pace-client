@@ -8,7 +8,7 @@ export enum SessionType {
 }
 
 export class GrandPrix {
-    constructor(public id: string, public name: string, public country: string, public sessions: Session[]) { }
+    constructor(public id: string, public name: string, public country: string, public timezone: string, public sessions: Session[]) { }
 
     private _from: Date;
     private _to: Date;

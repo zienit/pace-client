@@ -8,10 +8,14 @@ import { Session, GrandPrix } from '../event.model';
 })
 export class EventListContentComponent implements OnInit {
 
-  private groupedSessions: Session[][];
+  private _gp: GrandPrix;
+  private _groupedSessions: Session[][];
+
+  sessionTZ : string = null;
 
   @Input() set gp(gp: GrandPrix) {
-    this.groupedSessions = gp.sessions.reduce((groups, session) => {
+    this._gp = gp;
+    this._groupedSessions = gp.sessions.reduce((groups, session) => {
       const index = groups.findIndex(g => {
         const date = g[0].date;
         // group on day of the month
@@ -19,13 +23,18 @@ export class EventListContentComponent implements OnInit {
       })
       if (index !== -1) {
         return [...groups.slice(0, index), [...groups[index], session], ...groups.slice(index + 1)];
-        // group.push(session);
       } else {
         return [...groups, [session]];
-        // groups.push([session]);
       }
-      // return groups;
     }, [] as Session[][])
+  }
+
+  get gp() {
+    return this._gp;
+  }
+
+  get groupedSessions() {
+    return this._groupedSessions;
   }
 
   constructor() { }
