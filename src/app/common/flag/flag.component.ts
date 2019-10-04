@@ -41,7 +41,7 @@ export class FlagComponent implements OnInit {
 
   get style() {
     return {
-      'background-image': 'url(https://us-east-1-cdn-ui.motorsport.com/817/design/dist/components/flags/flags-50x30/flags-100x60-1_466a02afa94e0eb8371f35e15bb7583d.png)',
+      'background-image': 'url(assets/img/flags-100x60-1_466a02afa94e0eb8371f35e15bb7583d.png)',
       'height': '100%',
       'background-size': '1000%',
       'background-position-x': this.countries[this.country].col * -100 + '%',
