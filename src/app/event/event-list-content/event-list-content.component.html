@@ -21,6 +21,10 @@
     </div>
 </div>
 <mat-action-row>
+    <button mat-icon-button
+            [routerLink]="['/admin/event', gp.id]">
+        <mat-icon>edit</mat-icon>
+    </button>
     <button mat-button
             (click)="sessionTZ = sessionTZ ? null : gp.timezone">
         Convert to {{ sessionTZ ? 'your local' : 'session' }} time</button>

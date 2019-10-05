@@ -11,13 +11,13 @@
     </div>
     <div fxLayout="column"
          fxLayoutAlign="start end">
-        <span class="day">{{ gp.from | date : 'dd' }}</span>
-        <span class="month">{{ gp.from | date : 'LLL' | uppercase }}</span>
+        <span class="day">{{ from | date : 'dd' }}</span>
+        <span class="month">{{ from | date : 'LLL' | uppercase }}</span>
     </div>
     <span class="date-seperator">-</span>
     <div fxLayout="column"
          fxLayoutAlign="start end">
-        <span class="day">{{ gp.to | date : 'dd' }}</span>
-        <span class="month">{{ gp.to | date : 'LLL' | uppercase}}</span>
+        <span class="day">{{ to | date : 'dd' }}</span>
+        <span class="month">{{ to | date : 'LLL' | uppercase}}</span>
     </div>
 </div>

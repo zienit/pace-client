@@ -19,7 +19,6 @@ export class EventListComponent implements OnInit {
   readonly filteredGrandsPrix$ = this.grandsPrixSubject$.pipe(filter(gp => true));
 
   ngOnInit() {
-    console.log(this.eventService);
     this.eventService.getGrandsPrix().subscribe(gsp => {
       this.allGrandsprix = gsp;
       this.grandsPrixSubject$.next(gsp);

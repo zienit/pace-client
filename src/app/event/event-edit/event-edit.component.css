@@ -1,0 +1,16 @@
+form {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+mat-form-field {
+    width: 100%;
+}
+
+.session > mat-form-field {
+    width: auto;
+    margin-left: 16px;
+}
+
+.session-type {
+    width: 4em;
+}
