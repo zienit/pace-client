@@ -28,6 +28,8 @@ import { SessionDatePipe } from './event/session-date.pipe';
 import { EventEditComponent } from './event/event-edit/event-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EventPreviewComponent } from './event/event-preview/event-preview.component';
+import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,10 @@ import { EventPreviewComponent } from './event/event-preview/event-preview.compo
   providers: [
     DriverService,
     TeamService,
-    EventService
+    EventService,
+    { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS] },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
   bootstrap: [AppComponent]
 })

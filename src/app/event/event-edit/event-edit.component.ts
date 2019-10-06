@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { SessionType, GrandPrix } from '../event.model';
 import { EventPreviewComponent } from '../event-preview/event-preview.component';
 import { MatDialog } from '@angular/material/dialog';
-import { runInThisContext } from 'vm';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-event-edit',
@@ -52,7 +52,8 @@ export class EventEditComponent implements OnInit {
       sessions: gp.sessions.map(s => {
         return {
           type: s.type,
-          date: new Date(Date.UTC(s.date.getUTCFullYear(), s.date.getUTCMonth(), s.date.getUTCDate())),
+          // date: new Date(Date.UTC(s.date.getUTCFullYear(), s.date.getUTCMonth(), s.date.getUTCDate())),
+          date: moment.utc(s.date),
           time: s.date.getUTCHours() + ':' + ('0' + s.date.getUTCMinutes()).slice(-2)
         }
       })
@@ -81,9 +82,11 @@ export class EventEditComponent implements OnInit {
       country: value.country,
       sessions: value.sessions.map(s => {
         const [all, hours, minutes] = /(\d{1,2}):(\d{2})/.exec(s.time);
+        console.log(s.date);
         return {
           type: s.type,
-          date: new Date(Date.UTC(s.date.getUTCFullYear(), s.date.getUTCMonth(), s.date.getUTCDate(), +hours, +minutes))
+          // date: new Date(Date.UTC(s.date.getUTCFullYear(), s.date.getUTCMonth(), s.date.getUTCDate(), +hours, +minutes))
+          date: s.date.hours(+hours).minutes(+minutes).toDate()
         };
       })
     }
