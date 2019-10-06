@@ -27,6 +27,7 @@ import { SessionTypePipe } from './event/session-type.pipe';
 import { SessionDatePipe } from './event/session-date.pipe';
 import { EventEditComponent } from './event/event-edit/event-edit.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EventPreviewComponent } from './event/event-preview/event-preview.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,11 @@ import { ReactiveFormsModule } from '@angular/forms';
     EventListContentComponent,
     SessionTypePipe,
     SessionDatePipe,
-    EventEditComponent
+    EventEditComponent,
+    EventPreviewComponent
+  ],
+  entryComponents: [
+    EventPreviewComponent
   ],
   imports: [
     BrowserModule,

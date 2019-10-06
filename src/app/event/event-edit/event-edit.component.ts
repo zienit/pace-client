@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from '../event.service';
 import { map } from 'rxjs/operators';
 import { SessionType, GrandPrix } from '../event.model';
+import { EventPreviewComponent } from '../event-preview/event-preview.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-event-edit',
@@ -17,6 +19,7 @@ export class EventEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     // private router: Router,
+    private dialog: MatDialog,
     private eventService: EventService
   ) {
   }
@@ -24,6 +27,7 @@ export class EventEditComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl(null),
     country: new FormControl(null),
+    timezone: new FormControl(null),
     sessions: new FormArray([])
   });
 
@@ -35,6 +39,7 @@ export class EventEditComponent implements OnInit {
       this.form.setValue({
         name: e.name,
         country: e.country,
+        timezone: e.timezone,
         sessions: e.sessions.map(s => {
           return {
             type: s.type,
@@ -55,22 +60,30 @@ export class EventEditComponent implements OnInit {
   }
 
   onSubmit() {
+    const gp = this.getGrandprix()
+    console.log(gp);
+  }
+
+  private getGrandprix(): GrandPrix {
     const value = this.form.value;
-    const gp: GrandPrix = {
+    return {
       id: null,
-      timezone: null,
+      timezone: value.timezone,
       name: value.name,
       country: value.country,
       sessions: value.sessions.map(s => {
         const [all, hours, minutes] = /(\d{1,2}):(\d{2})/.exec(s.time);
-        console.log(hours);
-        console.log(minutes);
         return {
           type: s.type,
           date: new Date(Date.UTC(s.date.getUTCFullYear(), s.date.getUTCMonth(), s.date.getUTCDate(), +hours, +minutes))
         };
       })
     }
-    console.log(gp);
+  }
+
+  onPreview() {
+    const dialogRef = this.dialog.open(EventPreviewComponent, {
+      data: { grandprix: this.getGrandprix() }
+    });
   }
 }

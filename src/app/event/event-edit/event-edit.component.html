@@ -13,6 +13,12 @@
                placeholder="Country">
     </mat-form-field>
 
+    <mat-form-field>
+        <input matInput
+               formControlName="timezone"
+               placeholder="Timezone">
+    </mat-form-field>
+
     <div formArrayName="sessions">
         <div *ngFor="let session of form.get('sessions').controls; let i = index"
              [formGroupName]="i"
@@ -43,5 +49,10 @@
     <button mat-button
             type="submit"
             [disabled]="!form.valid">Submit</button>
+
+    <button mat-button
+            type="button"
+            [disabled]="!form.valid"
+            (click)="onPreview()">Preview</button>
 
 </form>
