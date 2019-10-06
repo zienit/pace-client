@@ -14,3 +14,10 @@ mat-form-field {
 .session-type {
     width: 4em;
 }
+
+.sessions-actions {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    margin-left: 4em;
+    padding-left: 16px;
+}

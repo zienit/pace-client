@@ -20,13 +20,14 @@
     </mat-form-field>
 
     <div formArrayName="sessions">
-        <div *ngFor="let session of form.get('sessions').controls; let i = index"
+
+        <div *ngFor="let session of sessions.controls; let i = index"
              [formGroupName]="i"
              fxLayout="row"
              fxLayoutAlign="start baseline"
              class="session">
 
-            <p class="session-type">{{ form.get('sessions').controls[i].get('type').value | sessionType }}</p>
+            <p class="session-type">{{ sessions.controls[i].get('type').value | sessionType }}</p>
 
             <mat-form-field>
                 <input matInput
@@ -43,10 +44,28 @@
                        formControlName="time"
                        [placeholder]="'Time'">
             </mat-form-field>
+
+            <button mat-icon-button
+                    type="button"
+                    (click)="onDeleteSession(i)">
+                <mat-icon>delete</mat-icon>
+            </button>
         </div>
+
+        <div class="sessions-actions">
+            <mat-chip-list selectable="false">
+                <mat-chip *ngFor="let t of missingSessionTypes"
+                          (click)="onInsertSession(t)">
+                    <mat-icon>add</mat-icon>{{ t | sessionType }}
+                </mat-chip>
+            </mat-chip-list>
+        </div>
+
     </div>
 
     <button mat-button
+            mat-flat-button
+            color="primary"
             type="submit"
             [disabled]="!form.valid">Submit</button>
 
